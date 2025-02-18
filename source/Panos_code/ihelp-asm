@@ -1,0 +1,216 @@
+        MODULE I_Help
+
+; Call various helper functions to handle issues
+; related to mixing of CHARACTER and Hollerith data
+
+        IMPORTC c_hunpack,c_hpack,c_ihol,c_holi
+        IMPORTC c_strout,c_intout,c_fltout,c_dblout,c_holout,c_xcopy
+
+        EXPORTC HUNPAK,HPACK,IHOL,HOLI
+        EXPORTC STROUT,INTOUT,FLTOUT,DBLOUT,HOLOUT,XCOPY
+
+HUNPAK
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    8(R0), TOS   ; pass address of parameter 3
+
+        MOVD    4(R0), TOS   ; pass address of parameter 2
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_hunpack
+
+        ADJSPD  POP3
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+HPACK
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    8(R0), TOS   ; pass address of parameter 3
+
+        MOVD    4(R0), TOS   ; pass address of parameter 2
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_hpack
+
+        ADJSPD  POP3
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+IHOL
+
+        MOVD    8(SP), PVEC
+
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_ihol
+
+        ADJSPD  POP1
+
+        EXIT [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+STROUT
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    4(R0), TOS   ; pass address of parameter 2
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_strout
+
+        ADJSPD  POP2
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+INTOUT
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_intout
+
+        ADJSPD  POP1
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+FLTOUT
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_fltout
+
+        ADJSPD  POP1
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+DBLOUT
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_dblout
+
+        ADJSPD  POP1
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+HOLOUT
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    4(R0), TOS   ; pass address of parameter 2
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_holout
+
+        ADJSPD  POP2
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+XCOPY
+
+        MOVD    8(SP), PVEC
+        
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    8(R0), TOS   ; pass address of parameter 3
+
+        MOVD    4(R0), TOS   ; pass address of parameter 2
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_xcopy
+
+        ADJSPD  POP3
+
+        EXIT    [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+HOLI
+
+        MOVD    8(SP), PVEC
+
+        ENTER   [R0, R1, R2, R3, R4, R5, R6, R7], 0
+
+        MOVD    PVEC, R0
+
+        MOVD    0(R0), TOS   ; pass address of parameter 1
+
+        CXP     c_holi
+
+        ADJSPD  POP1
+
+        EXIT [R0, R1, R2, R3, R4, R5, R6, R7]
+
+        RXP     4
+
+PVEC    DCD     0
+
+POP1    DCD    -4
+
+POP2    DCD    -8
+
+POP3    DCD    -12
+
+        END

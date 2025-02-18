@@ -1,0 +1,333 @@
+      SUBROUTINE PLAQUE
+C
+C       30-MAY-79
+C       OUTPUT DATE WITH LOWER-CASE CHARACTERS
+C       31-MAY-79
+C       DON'T RE-OPEN OUTPUT IF LUN=2 ON ENTRY
+C
+      INCLUDE 'TREKCOM-F77'
+      COMMON/PLAQ/ISCORE,PERDATE,ISKILL
+      COMMON/CHARCOMN/NULL,BLANK
+      CHARACTER NULL,BLANK
+C     LOGICAL*1 NAME(30)
+      CHARACTER NAME(30)
+      CHARACTER*20 STRDATE
+      INTEGER HNAME(8)
+      INTEGER HDATE(3)
+      INTEGER IFXRSLT
+      INTEGER BINTIME(0:1)
+C     COMMON/SCANBF/KEY,AITEM
+      COMMON/SCANBF/KEY
+      COMMON/SCANBF1/AITEM
+      COMMON/PRLUN/LUN
+C     LUNSAV=LUN
+C     LUN=1
+ 11   CALL PROMPT('ENTER NAME (UP TO 30 CHARACTERS): ',34)
+C     LUN=LUNSAV
+C     READ(1,20,ERR=11,END=11) ICHAR,NAME
+C20   FORMAT(Q,30A1)
+      DO 20 I=1,30
+      NAME(I)=BLANK
+ 20   CONTINUE
+      READ(*,21,ERR=11,END=11) NAME
+ 21   FORMAT (30A1)
+      NAMELEN=30
+      DO 22 I=1,30
+      IF(NAME(NAMELEN).NE.BLANK) GO TO 23
+      NAMELEN=NAMELEN-1
+ 22   CONTINUE
+C     NSKIP=65-ICHAR/2
+ 23   NSKIP=65-NAMELEN/2
+C     IF(LUN.EQ.2)GO TO 25
+C     LUN=2
+C     CALL CLOSE(2)
+C     CALL ASSIGN(2,'LP:')
+      OPEN (8, FILE='PLAQUE')
+      LUN=8
+C25   WRITE(2,30)
+      WRITE(8,30)
+ 30   FORMAT('1')
+      CALL SKIP(4)
+C--------DRAW ENTERPRISE PICTURE.
+C
+C     CALL PROUT(114H                                                  
+C    +              EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE,
+C    +114)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H              EEEEEEEEEEE,25)
+      CALL CRAM(25HEEEEEEEEEEEEEEEEEEEEEEEEE,25)
+      CALL CRAM(14HEEEEEEEEEEEEEE,14)
+      CALL CREND
+C
+C
+C     CALL PROUT(114H                                      EEE         
+C    +             E  : :                                         :  E,
+C    +114)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H             EEE         ,25)
+      CALL CRAM(25H             E  : :      ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(14H          :  E,14)
+      CALL CREND
+C
+C
+C     CALL PROUT(114H                                    EE   EEE      
+C    +             E  : :                   NCC-1701              :  E,
+C    +114)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H           EE   EEE      ,25)
+      CALL CRAM(25H             E  : :      ,25)
+      CALL CRAM(25H             NCC-1701    ,25)
+      CALL CRAM(14H          :  E,14)
+      CALL CREND
+C
+C
+C     CALL PROUT(114H                    EEEEEEEEEEEEEEEE        EEEEEE
+C    +EEEEEEEEE    E  : :                                         :  E,
+C    +114)
+C
+      CALL CRAM(25H                    EEEEE,25)
+      CALL CRAM(25HEEEEEEEEEEE        EEEEEE,25)
+      CALL CRAM(25HEEEEEEEEE    E  : :      ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(13H          : E,13)
+      CALL CREND
+C
+C
+C     CALL PROUT(112H                     E                            
+C    +         E    EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+C    1 ,112)
+C
+      CALL CRAM(25H                     E   ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H         E    EEEEEEEEEEE,25)
+      CALL CRAM(25HEEEEEEEEEEEEEEEEEEEEEEEEE,25)
+      CALL CRAM(12HEEEEEEEEEEEE,12)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                      EEEEEEEEE               EEEE
+C    +EEEEEEEEE                 E  E ,81)
+C
+      CALL CRAM(25H                      EEE,25)
+      CALL CRAM(25HEEEEEE               EEEE,25)
+      CALL CRAM(31HEEEEEEEEE                 E  E ,31)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                               EEEEEEE   EEEEE    
+C    +E          E              E  E ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H      EEEEEEE   EEEEE    ,25)
+      CALL CRAM(31HE          E              E  E ,31)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                                      EEE         
+C    +  E          E            E  E ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H             EEE         ,25)
+      CALL CRAM(31H  E          E            E  E ,31)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                                                  
+C    +     E         E          E  E ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(31H     E         E          E  E ,31)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                                                  
+C    +       EEEEEEEEEEEEE      E  E ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(31H       EEEEEEEEEEEEE      E  E ,31)
+      CALL CREND
+C
+C
+C     CALL PROUT(87H                                                  
+C    +    EEE :           EEEEEEE  EEEEEEEE,87)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(37H    EEE :           EEEEEEE  EEEEEEEE,37)
+      CALL CREND
+C
+C
+C     CALL PROUT(88H                                                  
+C    +  :E    :                 EEEE       E,88)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(38H  :E    :                 EEEE       E,38)
+      CALL CREND
+C
+C
+C     CALL PROUT(88H                                                  
+C    + .-E   -:-----                       E,88)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(38H .-E   -:-----                       E,38)
+      CALL CREND
+C
+C
+C     CALL PROUT(88H                                                  
+C    +  :E    :                            E,88)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(38H  :E    :                            E,38)
+      CALL CREND
+C
+C
+C     CALL PROUT(87H                                                  
+C    +    EE  :                    EEEEEEEE,87)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(37H    EE  :                    EEEEEEEE,37)
+      CALL CREND
+C
+C
+C     CALL PROUT(81H                                                  
+C    +     EEEEEEEEEEEEEEEEEEEEEEE   ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(31H     EEEEEEEEEEEEEEEEEEEEEEE   ,31)
+      CALL CREND
+C
+C
+      CALL SKIP(3)
+C
+C
+C     CALL PROUT(74H                                                  
+C    +     U. S. S. ENTERPRISE,74)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(24H     U. S. S. ENTERPRISE,24)
+      CALL CREND
+C
+C
+ 5    CALL SKIP(1)
+      CALL SKIP(3)
+C
+C
+C     CALL PROUT(93H                                  For demonstrating 
+C    +outstanding ability as a starship captain,93)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(27H         For demonstrating ,27)
+      CALL CRAM(41Houtstanding ability as a starship captain,41)
+      CALL CREND
+C
+C
+      CALL SKIP(1)
+C
+C
+C     CALL PROUT(81H                                                Star      
+C    +fleet Command bestows to you ,81)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                       St,25)
+      CALL CRAM(31Harfleet Command bestows to you ,31)
+      CALL CREND
+C
+C
+      CALL SKIP(1)
+      DO 8 I=1,NSKIP
+ 8    CALL CRAM(1H ,1)
+C     CALL CRAMS(NAME,ICHAR)
+      CALL HPACK(NAME(1),HNAME(1),NAMELEN)
+      CALL CRAMS(HNAME,NAMELEN,NAMELEN)
+      CALL CREND
+      CALL SKIP(1)
+C
+C
+C     CALL PROUT(71H                                                    
+C    +       the rank of ,71)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(21H         the rank of ,21)
+      CALL CREND
+C
+C
+      CALL SKIP(1)
+C
+C
+C     CALL PROUT(75H                                                     
+C    +   "Commodore Emeritus",75)
+C
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H                         ,25)
+      CALL CRAM(25H     "Commodore Emeritus",25)
+      CALL CREND
+C
+C
+      CALL SKIP(1)
+      CALL CRAM(58H
+     +                                     ,58)
+      IF(ISKILL .EQ. 4) CALL CRAM(8H Expert ,8)
+      IF(ISKILL .EQ. 5) CALL CRAM(9HEmeritus ,9)
+      CALL CRAMDMP(5Hlevel,5)
+      CALL SKIP(1)
+C
+C
+C     CALL CRAM(66H                                                     
+C    1 This day of ,66)
+C
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(16H    This day of ,16)
+C
+C     CALL FOR$DATE(NAME)
+C     NAME(5)=NAME(5)+32
+C     NAME(6)=NAME(6)+32
+C     CALL CRAMS(NAME,9)
+      CALL IFXBINARYTIME(BINTIME)
+      IFXRSLT=IFTEXTUALTIMEOFBINARYTIME(STRDATE,20,BINTIME)
+      CALL HPACK(STRDATE,HDATE(1),9)
+      CALL CRAMS(HDATE,9,9)
+      CALL CREND
+      CALL SKIP(1)
+C
+C
+C     CALL CRAM(69H                                                     
+C    1   Your score:  ,69)
+C
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(19H      Your score:  ,19)
+C
+      CALL CRAMI(ISCORE,0)
+      CALL CREND
+      CALL SKIP(1)
+C
+C
+C     CALL CRAM(76H                                                   
+C    1Klingons per stardate:   ,76)
+C
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(25H                         ,25)                            
+      CALL CRAM(26H Klingons per stardate:   ,26)
+C
+C
+      CALL CRAMF(PERDATE,0,2)
+      CALL CREND
+      CLOSE (8)
+      LUN=1
+      RETURN
+      END

@@ -1,0 +1,6 @@
+$ .swd adfs::1.$.Tests
+$ delete rantst-aof -noconfirm
+$ .obey adfs::0.$.PanosLib.f77-cmd rantst -opt +6
+$ delete rantst-rif -noconfirm
+$ link -via rantst -image rantst-rif
+

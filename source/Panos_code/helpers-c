@@ -1,0 +1,173 @@
+void c_hunpack(p1, p2, p3)
+int *p1, **p2, *p3;
+{
+   int i, cnt;
+   char *hline_p, *line_p;
+
+   hline_p = (char *)p1;
+   line_p = (char *)*p2;
+   cnt = *p3;
+
+   for (i=1; i<=cnt; i++)
+   {
+      *line_p++ = *hline_p++;
+   }
+}
+
+void c_hpack(p1, p2, p3)
+int **p1, *p2, *p3;
+{
+   int i, cnt, rem;
+   char *hline_p, *line_p;
+   char blank = 0x20;
+
+   line_p = (char *)*p1;
+   hline_p = (char *)p2;
+   cnt = *p3;
+
+   for (i=1; i<=cnt; i++)
+   {
+      *hline_p++ = *line_p++;
+   }
+
+   rem = cnt - ((cnt/4)*4);
+   for (i=1; i<=rem; i++)
+   {
+      *hline_p++ = blank;
+   }
+}
+
+void c_ihol(p1)
+int *p1;
+{
+   int i;
+   char *hol_p;
+   char blank = 0x20;
+
+   hol_p = (char *)p1;
+
+   for (i=1; i<=3; i++)
+   {
+      *(hol_p+i) = blank;
+   }
+}
+
+void c_strout(p1, p2)
+int **p1, *p2;
+{
+   int i, len;
+   char *str_p;
+   char charbuf[130];
+
+   str_p = (char *)*p1;
+   len = *p2;
+
+   for (i=0; i<len; i++)
+   {
+      charbuf[i] = *str_p++;
+   }
+   charbuf[len] = '\0';
+
+/*
+   printf("\nLEN='%u'\n", len);
+   printf("\nHEX:  ");
+
+   for (i=0; i<len; i++)
+   {
+      printf("[%x]", charbuf[i]);
+   }
+
+   printf("\n\nSTR:  '%s'\n", charbuf);
+*/
+   printf("\nSTR(%u): '%s'\n", len, charbuf);
+}
+
+void c_intout(p1)
+int *p1;
+{
+   int myint;
+
+   myint = *p1;
+
+   printf("\nUNSIGNED='%u'  SIGNED='%d'\n", myint, myint);
+}
+
+void c_fltout(p1)
+float *p1;
+{
+   float myflt;
+
+   myflt = *p1;
+
+   printf("\nFLOAT='%f'\n", myflt);
+}
+
+void c_dblout(p1)
+double *p1;
+{
+   double mydbl;
+
+   mydbl = *p1;
+
+   printf("\nDOUBLE='%f'\n", mydbl);
+}
+
+void c_holout(p1, p2)
+int *p1, *p2;
+{
+   int i, len;
+   char *hol_p;
+   char charbuf[130];
+
+   hol_p = (char *)p1;
+   len = *p2;
+
+   for (i=0; i<len; i++)
+   {
+      charbuf[i] = *hol_p++;
+   }
+   charbuf[len] = '\0';
+
+/*
+   printf("\nLEN='%u'\n", len);
+   printf("\nHEX:  ");
+
+   for (i=0; i<len; i++)
+   {
+      printf("[%x]", charbuf[i]);
+   }
+
+   printf("\n\nHSTR:  '%s'\n", charbuf);
+*/
+   printf("\nHSTR(%u): '%s'\n", len, charbuf);
+}
+
+void c_xcopy(p1, p2, p3)
+int *p1, *p2, *p3;
+{
+   int i, cnt;
+   char *in_p, *out_p;
+
+   in_p = (char *)p1;
+   out_p = (char *)p2;
+   cnt = *p3;
+
+   for (i=1; i<=cnt; i++)
+   {
+      *out_p++ = *in_p++;
+   }
+}
+
+void c_holi(p1)
+int *p1;
+{
+   int i;
+   char *hol_p;
+
+   hol_p = (char *)p1;
+
+   for (i=1; i<=3; i++)
+   {
+      *(hol_p+i) = 0;
+   }
+}

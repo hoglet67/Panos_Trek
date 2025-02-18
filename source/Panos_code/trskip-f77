@@ -1,0 +1,7 @@
+      SUBROUTINE SKIP(N)
+      DO 10 L=1,N
+C     CALL PROUT(0,1)
+      CALL PROUT(4H    ,4)
+ 10   CONTINUE
+      RETURN
+      END

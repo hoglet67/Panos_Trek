@@ -1,0 +1,8 @@
+$ .key source
+$ .swd adfs::1.$.Trek_src
+$ delete <source>-aof -noconfirm
+$ delete adfs::1.$.Trek_aof.<source>-aof -noconfirm
+$ .obey adfs::0.$.PanosLib.f77-cmd <source> -opt +6
+$ copy <source>-aof adfs::1.$.Trek_aof -force
+$ delete <source>-aof -noconfirm
+

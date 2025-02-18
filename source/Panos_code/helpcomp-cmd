@@ -1,0 +1,12 @@
+$ .swd adfs::1.$.Trek_src1
+$ delete helpers-aof -noconfirm
+$ delete adfs::1.$.Trek_aof1.helpers-aof -noconfirm
+$ cc helpers-c
+$ copy helpers-aof adfs::1.$.Trek_aof1 -force
+$ delete helpers-aof -noconfirm
+$ delete ihelp-aof -noconfirm
+$ delete adfs::1.$.Trek_aof1.ihelp-aof -noconfirm
+$ asm32 ihelp
+$ copy ihelp-aof adfs::1.$.Trek_aof1 -force
+$ delete ihelp-aof -noconfirm
+
