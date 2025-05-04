@@ -12,7 +12,7 @@ This is a set of Perl programs. Usage (in Cygwin or Msys on Windows; or in Linux
 In the directory into which you've extracted the mmb_utils Perl files, create a blank SSD image; e.g.:
 
 ####
-    $ ./beeb blank_ssd xfer.ssd
+    $ beeb blank_ssd xfer.ssd
     $
     $ beeb info xfer.ssd
     Disk title:  (1)  Disk size: &320 - 200K
@@ -24,7 +24,7 @@ In the directory into which you've extracted the mmb_utils Perl files, create a 
 Copy file(s) to be put onto the floppy into the mmb_utils directory as well (but with **short** names and no special characters; e.g., "cp trekcom-f77 ../mmb_utils/trekcom"). Then copy the file onto the floppy image:
 
 ####
-    $ ./beeb putfile xfer.ssd trekcom
+    $ beeb putfile xfer.ssd trekcom
     $
     $ beeb info xfer.ssd
     Disk title:  (1)  Disk size: &320 - 200K
@@ -227,7 +227,7 @@ The link command specifies both the control file (the "-lnk" extension is implie
 
 The "ifp" library specified in the "-Library" option in the "trek-lnk" linker control file provides the system subroutines IFXSETRANDOMSEED, IFXRANDOM, IFXBINARYTIME, and IFTEXTUALTIMEOFBINARYTIME.
 
-There are two non-Fortran source files, one C and one Asm32, which became necessary (mostly because of issues related to the mixing of CHARACTER and Hollerith data; see below for details) in the course of porting Super Star Trek to Panos Fortran 77: "adfs::1.$.Trek_src1.helpers-c" and "adfs::1.$.ihelp-asm". The assembly-language file is an interface which allows the subroutines provided by the C source file to be called from Fortran. The addition of the C source file requires the "c,pas" libraries to be added to the "-Library" option in "trek-lnk".
+There are two non-Fortran source files, one C and one Asm32, which became necessary (mostly because of issues related to the mixing of CHARACTER and Hollerith data; see below for details) in the course of porting Super Star Trek to Panos Fortran 77: "adfs::1.$.Trek_src1.helpers-c" and "adfs::1.$.Trek_src1.ihelp-asm". The assembly-language file is an interface which allows the subroutines provided by the C source file to be called from Fortran. The addition of the C source file requires the "c,pas" libraries to be added to the "-Library" option in "trek-lnk".
 
 ## Notes on porting the VAX Super Star Trek code to Panos Fortran 77
 
@@ -269,7 +269,7 @@ This permitted reversion of an ugly fix in the Sigma port where initialization o
     in trekblk-f77:
 
     DATA COMSZA/831/
-    DATA COMSZB/60/
+    DATA COMSZB/58/
 
 NOTE: The sizes of the two big common blocks ("BLANCA", "BLANCB") are specified as INTEGER-array equivalents (i.e. total_bytes/4). These numbers are used when an in-progress game is saved to or restored from a file ("EMEXIT" in "tremexi-f77", "FREEZE" in "trfreez-f77", "THAW" in "trthaw-f77").
 
@@ -324,12 +324,12 @@ However, for the Sigma/CP-V port, the sizes of the save/restore integer arrays w
 ####
           PARAMETER COMSIZA=859
           . . .
-          PARAMETER COMSIZB=60
+          PARAMETER COMSIZB=58
           . . .
           INTEGER ICOMA(COMSIZA)
-          EQUIVALENCE (ICOMA,SNAPA)
+          EQUIVALENCE (ICOMA,SNAP)
           INTEGER ICOMB(COMSIZB)
-          EQUIVALENCE (ICOMB,SNAPB)
+          EQUIVALENCE (ICOMB,DEVICE(1,1))
     
 The actual byte count of "COMMON/BLANCA/" in the Sigma/CP-V F77 file "F7:TREKCOM" is:
     
@@ -337,7 +337,7 @@ The actual byte count of "COMMON/BLANCA/" in the Sigma/CP-V F77 file "F7:TREKCOM
     Sigma/CP-V Fortran 77, COMMON/BLANCA/
     (F7:TREKCOM), line-by-line byte totals:
     
-     1. 908      COMMON/BLANCA/SNAPA,SNAPSHT(226),
+     1. 908      COMMON/BLANCA/SNAP,SNAPSHT(226),
      2.  32     1   DATE,REMKL,REMCOM,REMBASE,REMRES,REMTIME,STARKL,BASEKL,
      3. 384     2   KILLK,KILLC,GALAXY(8,8),CX(10),CY(10),BASEQX(5),BASEQY(5),
      4. 476     3   NEWSTUF(8,8),PLNETS(10,5),ISX,ISY,NSCREM,NROMKL,NROMREM,
@@ -369,19 +369,19 @@ Differences between blank COMMON in VAX Fortran "TREKCOM.FOR" and "COMMON/BLANCA
                     --------------
                               45 = 859 (F7:TREKCOM) - 814 (TREKCOM.FOR)
     
-In the Panos Fortran 77 version, common block "BLANCA" in "trekcom-f77" is the same as the Sigma/CP-V version's "BLANCA" in "F7:TREKCOM", except that "DEVLEN" has been eliminated. Hence, COMSZA = 859-28 = 831:
+In the Panos Fortran 77 version, common block "BLANCA" in "trekcom-f77" is the same as the Sigma/CP-V version's "BLANCA" in "F7:TREKCOM", except that integer array "DEVLEN(2,14)" has been eliminated. Hence, COMSZA = 859-28 = 831:
     
 ####
           INTEGER ICOMA(831)             (trekcom-f77)
-          EQUIVALENCE (ICOMA,SNAPA)
-          INTEGER ICOMB(60)
-          EQUIVALENCE (ICOMB,SNAPB)
+          EQUIVALENCE (ICOMA,SNAP)
+          INTEGER ICOMB(58)
+          EQUIVALENCE (ICOMB,DEVICE(1,1))
           . . .
           INTEGER COMSZA,COMSZB
           COMMON/COMSZAB/COMSZA,COMSZB
     
           DATA COMSZA/831/               (trekblk-f77)
-          DATA COMSZB/60/
+          DATA COMSZB/58/
     
 --  Strict Fortran 77 does not allow unrestrained initialization of variables in COMMON blocks using
     DATA statements.  This results in the error:

@@ -26,6 +26,6 @@ C
      5 1H /
 C
        DATA COMSZA/831/
-       DATA COMSZB/60/
+       DATA COMSZB/58/
 C
       END

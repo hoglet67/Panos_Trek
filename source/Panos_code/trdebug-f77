@@ -23,6 +23,7 @@ C
       DO 10 I=1,20
       DAMAGE(I)=0
  10   CONTINUE
+      ISUBDAM=0
       CALL SRSCAN
 C
       RETURN
